@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: student-crud
+    env: go
+    buildCommand: go build -tags netgo -ldflags '-s -w' -o app
+    startCommand: ./app
+    plan: free
+    branch: main
+    autoDeploy: true
+
