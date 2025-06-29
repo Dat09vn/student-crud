@@ -34,6 +34,20 @@ func GetStudent(c *gin.Context) {
 	c.JSON(http.StatusOK, student)
 }
 
+func GetStudentByName(c *gin.Context) {
+	name := c.Param("name")
+	var students []models.Student
+	if err := database.DB.Where("name = ?", name).Find(&students).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if len(students) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No students found with that name"})
+		return
+	}
+	c.JSON(http.StatusOK, students)
+}
+
 func UpdateStudent(c *gin.Context) {
 	id := c.Param("id")
 	var student models.Student
